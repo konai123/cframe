@@ -4,7 +4,7 @@
 
 #include "cframe.h"
 
-namespace cframe
+namespace CframeInternal
 {
 
 }
