@@ -8,6 +8,9 @@
 #pragma comment(lib, "ws2_32.lib")
 using namespace Cframe;
 
+/*
+ * Only tested on MSVC
+ * */
 SOCKET createServer()
 {
     WORD		wVersionRequested;

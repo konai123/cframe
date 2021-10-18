@@ -7,12 +7,10 @@ elseif(UNIX)
     set(Impls src/linux/cframe_linux_impl.cpp)
 endif()
 
-add_executable(
+add_library(
         ${CMAKE_PROJECT_NAME}
-
         src/cframe.cpp
         ${Impls}
-        src/test.cpp
 )
 
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_20)

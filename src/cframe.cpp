@@ -3,6 +3,7 @@
 //
 
 #include "cframe.h"
+#include <cstring>
 
 Cframe::CFRAME_IO Cframe::IO;
 
@@ -31,7 +32,7 @@ CframeSizeT Cframe::ReadFrame(const CframeInternal::CFRAME_SOCKET *socket, std::
 
     byte* cursor = Cframe::IO.Buffer.data() + Cframe::IO.DecoderInfo.LengthFieldOffset;
     CframeSizeT leftedSize;
-    ::memcpy_s(&leftedSize, sizeof(CframeSizeT), cursor, Cframe::IO.DecoderInfo.LengthFieldLength);
+    ::memcpy(&leftedSize, cursor, Cframe::IO.DecoderInfo.LengthFieldLength);
     CFRAME_ASSERT(leftedSize >= 0);
     leftedSize += Cframe::IO.DecoderInfo.LengthFieldBias;
     Cframe::IO.Buffer.resize(waitSize + leftedSize);
