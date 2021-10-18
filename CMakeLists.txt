@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 
 add_executable(
         ${CMAKE_PROJECT_NAME}
+        src/cframe.cpp
         src/win/cframe_win_impl.cpp
 
         src/test.cpp

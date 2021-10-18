@@ -8,6 +8,7 @@
  * macros
  * */
 #include <cassert>
+#include <vector>
 
 #ifdef _WIN32
 #include "win/cframe_win_impl.h"
@@ -16,13 +17,9 @@
 #endif
 
 #if defined(DEBUG) || defined(_DEBUG)
-#define CFRAME_ASSERT(x) {                                      \
-    assert(x)                                                   \
-}                                                               \
-
-#define CFRAME_STATIC_ASSERT(x) {                               \
-    static_assert(x)                                            \
-}                                                               \
+#define CFRAME_ASSERT(x) {                                          \
+    assert(x);                                                      \
+}                                                                   \
 
 #else
 
@@ -34,13 +31,17 @@
 
 #endif
 
+#define CFRAME_SOCKET_DISCONNECTED  0
+
 /*
  * types
  * */
-constexpr int CframeMaxLengthFieldSize = 4;
+namespace {
+    constexpr int CframeMaxLengthFieldSize = 4;
+}
+
 typedef int CframeSizeT;
-typedef unsigned char byte;
-static_assert(sizeof(CframeSizeT) <= CframeMaxLengthFieldSize);
+static_assert(sizeof(CframeSizeT) >= CframeMaxLengthFieldSize);
 
 namespace Cframe {
     struct CFRAME_DECODER_INFO {
@@ -51,18 +52,20 @@ namespace Cframe {
 
     struct CFRAME_IO {
         CFRAME_DECODER_INFO DecoderInfo;
+        CframeSizeT ReadSize;
+        std::vector<byte> Buffer;
     };
-
 }
 
 /*
  * functions
  * */
 namespace Cframe {
-    constexpr bool Initialize(const CFRAME_DECODER_INFO decoderInfo);
-    byte* ReadFrame(const CframeInternal::CFRAME_SOCKET* socket);
+    using CFrameSocket = CframeInternal::CFRAME_SOCKET;
+    bool Initialize(const CFRAME_DECODER_INFO& decoderInfo);
+    CframeSizeT ReadFrame(const CFrameSocket *socket, std::vector<byte>& out);
 }
 
 namespace Cframe {
-    CFRAME_IO IO;
+    extern CFRAME_IO IO;
 }
